@@ -1,44 +1,52 @@
 {% extends 'base/base.html' %}
-{% block content %} 
+{% block content %}  
       
 
     <!-- main content -->
     <div class="container mx-auto my-3">
         <h1 class="text-center text-uppercase mb-2">Find weather by city</h1>
         <div class="text-center">
-            <form action="" method="get">
+            <form action="" method="POST">
+              {% csrf_token %}
                 <input class="form-control m-3 w-50 mx-auto" type="text" name="city" id="city" placeholder="Enter City Name...">
                 <input type="submit" class="btn btn-secondary btn-lg">
             </form>
         </div>
 
         {% if results %}
-
         <table class="table w-50 mx-auto mt-5">
             <thead>
                 <tr>
-                    <th colspan="2" class="text-center h3">Weather of {{results.region}}</th>
+                    <th colspan="2" class="text-center h3">Weather of {{results.city}}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <th scope="row">Area</th>
-                    <td>{{results.region}}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Day time</th>
-                    <td>{{results.daytime}}</td>
+                    <td>{{results.city}}</td>
                 </tr>
                 <tr>
                     <th scope="row">Weather</th>
                     <td>{{results.weather}}</td>
                 </tr>
                 <tr>
+                    <th scope="row">Description</th>
+                    <td>{{results.description}}</td>
+                </tr>
+                <tr>
                     <th scope="row">Temperature</th>
                     <td>{{results.temp}} °C</td>
+                </tr>
+                <tr>
+                    <th scope="row">Today Minimum Temperature </th>
+                    <td>{{results.temp_min}} °C</td>
+                </tr>
+                <tr>
+                    <th scope="row">Today Maximum Temperature</th>
+                    <td>{{results.temp_max}} °C</td>
                 </tr>
             </tbody>
         </table>
         {% endif %}
     </div>
-  {% endblock %}
+{% endblock %}

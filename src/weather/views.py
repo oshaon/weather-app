@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import requests
+import requests, json
 from bs4 import BeautifulSoup as bs
 
 def get_weather_data(city):
@@ -35,3 +35,25 @@ def home_view(request):
     else:
         context = {}
     return render(request, 'weather/home.html',context)
+
+#function for api weather
+def weather_api(city):
+    api_key = 'c837f131c7a003f52f364aa42d40560d'
+    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric'
+    response = requests.get(url)
+    data = json.loads(response.text)
+    results = {}
+    results['weather'] = data['weather'][0]['main']
+    results['description'] = data['weather'][0]['description']
+    results['temp'] = data['main']['temp']
+    results['temp_min'] = data['main']['temp_min']
+    results['temp_max'] = data['main']['temp_max']
+    return results
+
+#weather_api view
+def api_view(request):
+    if request.method == "POST" and 'city' in request.POST:
+        city = request.POST.get('city')
+        results = weather_api(city)
+        context = {'results':results}
+        return render(request, 'weather/api.html', context)
